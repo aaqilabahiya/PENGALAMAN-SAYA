@@ -1,0 +1,1762 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EKSPEDISI HELIKOPTER: SUARA HATI MURID!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sky-top: #4FACFE;
+            --sky-bottom: #00F2FE;
+            --primary-yellow: #FFD166;
+            --primary-orange: #FF9F1C;
+            --primary-green: #06D6A0;
+            --primary-red: #EF476F;
+            --primary-blue: #118AB2;
+            --primary-purple: #8338EC;
+            --dark-card: rgba(255, 255, 255, 0.95);
+            --font-heading: 'Fredoka One', cursive, sans-serif;
+            --font-body: 'Nunito', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: var(--font-body);
+            background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-bottom) 100%);
+            color: #2B2D42;
+        }
+
+        /* Screen Container */
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            padding: 20px;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        /* Sky Background Effects */
+        .sky-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .cloud {
+            position: absolute;
+            background: #FFF;
+            border-radius: 50px;
+            opacity: 0.85;
+            animation: floatCloud linear infinite;
+        }
+
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: #FFF;
+            border-radius: 50%;
+        }
+
+        .cloud-1 { width: 120px; height: 40px; top: 10%; animation-duration: 25s; }
+        .cloud-1::before { width: 50px; height: 50px; top: -20px; left: 20px; }
+        .cloud-1::after { width: 40px; height: 40px; top: -15px; right: 20px; }
+
+        .cloud-2 { width: 180px; height: 60px; top: 25%; animation-duration: 35s; animation-delay: -10s; }
+        .cloud-2::before { width: 70px; height: 70px; top: -30px; left: 30px; }
+        .cloud-2::after { width: 60px; height: 60px; top: -20px; right: 30px; }
+
+        .cloud-3 { width: 100px; height: 35px; top: 50%; animation-duration: 20s; animation-delay: -5s; }
+        .cloud-3::before { width: 40px; height: 40px; top: -15px; left: 15px; }
+
+        @keyframes floatCloud {
+            0% { transform: translateX(110vw); }
+            100% { transform: translateX(-200px); }
+        }
+
+        /* Rainbow Decorative */
+        .rainbow {
+            position: absolute;
+            top: 50px;
+            right: -50px;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            box-shadow: inset 0 0 0 15px #FF0000, inset 0 0 0 30px #FF7F00, inset 0 0 0 45px #FFFF00, inset 0 0 0 60px #00FF00, inset 0 0 0 75px #0000FF, inset 0 0 0 90px #8B00FF;
+            opacity: 0.25;
+            pointer-events: none;
+        }
+
+        /* UI Cards & Glassmorphism */
+        .card {
+            background: var(--dark-card);
+            border-radius: 28px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15), inset 0 4px 0 #FFFFFF;
+            border: 4px solid #FFFFFF;
+            text-align: center;
+            max-width: 550px;
+            width: 90%;
+            z-index: 5;
+            position: relative;
+        }
+
+        h1 {
+            font-family: var(--font-heading);
+            color: #FF5964;
+            font-size: 2.2rem;
+            text-shadow: 3px 3px 0px #FFF, 5px 5px 0px rgba(0,0,0,0.1);
+            margin-bottom: 5px;
+            line-height: 1.1;
+        }
+
+        .slogan {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+        }
+
+        /* Styled Buttons */
+        .btn {
+            font-family: var(--font-heading);
+            padding: 14px 28px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.2), 0 10px 15px rgba(0,0,0,0.1);
+            margin: 8px;
+            text-decoration: none;
+            color: white;
+            position: relative;
+            top: 0;
+        }
+
+        .btn:active {
+            top: 4px;
+            box-shadow: 0 2px 0 rgba(0,0,0,0.2), 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn-yellow { background: linear-gradient(180deg, #FFD166 0%, #F7B801 100%); color: #5C3D00; }
+        .btn-green { background: linear-gradient(180deg, #06D6A0 0%, #05B386 100%); }
+        .btn-blue { background: linear-gradient(180deg, #118AB2 0%, #0E6B8B 100%); }
+        .btn-purple { background: linear-gradient(180deg, #8338EC 0%, #6411AD 100%); }
+        .btn-orange { background: linear-gradient(180deg, #FF9F1C 0%, #E07A00 100%); }
+        .btn-red { background: linear-gradient(180deg, #EF476F 0%, #D62839 100%); }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.95rem;
+            border-radius: 20px;
+        }
+
+        /* Sound Toggle Button */
+        .sound-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border: 3px solid var(--primary-blue);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.4rem;
+            cursor: pointer;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Input Controls */
+        .form-group {
+            margin-bottom: 18px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 800;
+            margin-bottom: 6px;
+            color: #333;
+            font-size: 1rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 18px;
+            border-radius: 16px;
+            border: 3px solid #CBD5E1;
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            font-weight: 700;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-blue);
+        }
+
+        /* SVG Cartoon Helicopter Graphic */
+        .heli-illustration {
+            width: 160px;
+            height: 120px;
+            margin: 0 auto 15px auto;
+            position: relative;
+        }
+
+        /* Modal Dialogs */
+        .modal-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        /* GAME AREA STYLES */
+        #game-screen {
+            padding: 0;
+            justify-content: space-between;
+        }
+
+        .game-header {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 12px 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 20;
+        }
+
+        .game-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .student-badge {
+            background: var(--primary-purple);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 0.9rem;
+        }
+
+        .section-badge {
+            background: var(--primary-orange);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 16px;
+            background: #E2E8F0;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid #CBD5E1;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 5%;
+            background: linear-gradient(90deg, #06D6A0, #118AB2);
+            border-radius: 8px;
+            transition: width 0.4s ease;
+        }
+
+        .progress-text {
+            font-size: 0.85rem;
+            font-weight: 900;
+            color: #475569;
+            text-align: right;
+        }
+
+        /* Statement Card */
+        .statement-box {
+            background: white;
+            border: 4px solid var(--primary-yellow);
+            border-radius: 24px;
+            padding: 20px 25px;
+            margin: 10px 20px;
+            max-width: 800px;
+            width: calc(100% - 40px);
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            z-index: 20;
+        }
+
+        .statement-number {
+            font-family: var(--font-heading);
+            color: var(--primary-blue);
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .statement-text {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #1E293B;
+            line-height: 1.4;
+        }
+
+        /* Flight World Stage */
+        .flight-stage {
+            flex: 1;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Helicopter Sprite in Game */
+        .heli-sprite {
+            position: absolute;
+            width: 110px;
+            height: 80px;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: left 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.2s ease;
+            z-index: 30;
+            pointer-events: none;
+        }
+
+        .rotor {
+            transform-origin: 43px 12px;
+            animation: spinRotor 0.1s linear infinite;
+        }
+
+        @keyframes spinRotor {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Floating Answer Platforms */
+        .platforms-container {
+            position: absolute;
+            bottom: 25px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-evenly;
+            padding: 0 10px;
+            z-index: 25;
+        }
+
+        .platform {
+            width: 22%;
+            max-width: 180px;
+            background: white;
+            border-radius: 20px;
+            padding: 12px 8px;
+            text-align: center;
+            box-shadow: 0 8px 0 rgba(0,0,0,0.15), 0 15px 20px rgba(0,0,0,0.1);
+            border: 4px solid #CBD5E1;
+            transition: all 0.25s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .platform.p1 { border-color: var(--primary-red); }
+        .platform.p2 { border-color: var(--primary-orange); }
+        .platform.p3 { border-color: var(--primary-green); }
+        .platform.p4 { border-color: var(--primary-blue); }
+
+        .platform.active {
+            transform: translateY(-12px) scale(1.05);
+            box-shadow: 0 16px 0 rgba(0,0,0,0.15), 0 20px 25px rgba(0,0,0,0.2);
+        }
+
+        .platform.p1.active { background: #FFE5EC; }
+        .platform.p2.active { background: #FFF3E0; }
+        .platform.p3.active { background: #E6F9F4; }
+        .platform.p4.active { background: #E0F2FE; }
+
+        .platform-icon {
+            font-size: 1.8rem;
+            margin-bottom: 2px;
+        }
+
+        .platform-scale {
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            margin-bottom: 2px;
+        }
+
+        .platform-label {
+            font-size: 0.85rem;
+            font-weight: 900;
+            line-height: 1.1;
+        }
+
+        .p1 .platform-scale, .p1 .platform-label { color: var(--primary-red); }
+        .p2 .platform-scale, .p2 .platform-label { color: var(--primary-orange); }
+        .p3 .platform-scale, .p3 .platform-label { color: var(--primary-green); }
+        .p4 .platform-scale, .p4 .platform-label { color: var(--primary-blue); }
+
+        /* Touch & Keyboard Controls Bar */
+        .controls-bar {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 40;
+            border-top: 3px solid #E2E8F0;
+        }
+
+        .nav-btn {
+            width: 70px;
+            height: 55px;
+            border-radius: 18px;
+            background: var(--primary-blue);
+            color: white;
+            font-size: 1.8rem;
+            border: none;
+            box-shadow: 0 5px 0 #0E6B8B;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #0E6B8B;
+        }
+
+        .confirm-btn {
+            flex: 1;
+            margin: 0 15px;
+            max-width: 300px;
+            height: 55px;
+            border-radius: 28px;
+            font-size: 1.2rem;
+        }
+
+        /* Feedback Flash Message */
+        .toast-msg {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: #06D6A0;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .toast-msg.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* TEACHER PANEL STYLES */
+        .teacher-container {
+            width: 95%;
+            max-width: 1100px;
+            height: 90vh;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 50;
+        }
+
+        .teacher-header {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+            color: white;
+            padding: 18px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .teacher-nav {
+            display: flex;
+            background: #F1F5F9;
+            padding: 6px;
+            gap: 6px;
+            border-bottom: 2px solid #E2E8F0;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 12px;
+            background: transparent;
+            font-family: var(--font-body);
+            font-weight: 800;
+            color: #64748B;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: var(--primary-purple);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        .teacher-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #F8FAFC;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .data-table th, .data-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #E2E8F0;
+            font-size: 0.95rem;
+        }
+
+        .data-table th {
+            background: #EDF2F7;
+            font-weight: 800;
+            color: #334155;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 800;
+        }
+
+        .badge-success { background: #DEF7EC; color: #03543F; }
+        .badge-warning { background: #FEF08A; color: #713F12; }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 18px;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border-left: 5px solid var(--primary-blue);
+        }
+
+        .summary-card h4 {
+            color: #64748B;
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+        }
+
+        .summary-card .number {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #1E293B;
+        }
+
+        /* Detail Response Modal */
+        .response-detail-list {
+            text-align: left;
+            max-height: 400px;
+            overflow-y: auto;
+            margin: 15px 0;
+            padding-right: 10px;
+        }
+
+        .response-item {
+            padding: 10px;
+            border-bottom: 1px solid #E2E8F0;
+            font-size: 0.95rem;
+        }
+
+        .response-item strong {
+            color: var(--primary-blue);
+        }
+
+        /* Sunset Animation End Screen */
+        .sunset-bg {
+            background: linear-gradient(180deg, #FD5E53 0%, #E684AE 40%, #FFBE0B 100%) !important;
+        }
+
+        .sunset-heli {
+            animation: flyToSunset 6s forwards ease-in-out;
+        }
+
+        @keyframes flyToSunset {
+            0% { transform: scale(1) translate(0, 0); }
+            50% { transform: scale(0.7) translate(150px, -80px); }
+            100% { transform: scale(0.2) translate(400px, -200px); opacity: 0; }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.6rem; }
+            .statement-text { font-size: 1.1rem; }
+            .platform-label { font-size: 0.75rem; }
+            .platform-scale { font-size: 0.85rem; }
+            .platform-icon { font-size: 1.4rem; }
+            .platform { padding: 8px 4px; }
+            .card { padding: 20px 15px; }
+            .controls-bar { padding: 8px 10px; }
+            .nav-btn { width: 55px; height: 48px; }
+            .confirm-btn { height: 48px; font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sky Background Layer -->
+    <div class="sky-bg">
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+        <div class="rainbow"></div>
+    </div>
+
+    <!-- Audio Toggle Button -->
+    <button class="sound-btn" id="sound-toggle-btn" onclick="toggleAudio()" title="Hidup/Matikan Bunyi">🔊</button>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast-msg">Jawapan kamu telah direkodkan! 🚁</div>
+
+    <!-- 1. LANDING / START SCREEN -->
+    <div id="start-screen" class="screen active">
+        <div class="card">
+            <!-- SVG Cartoon Helicopter Illustration -->
+            <div class="heli-illustration">
+                <svg viewBox="0 0 200 150" width="100%" height="100%">
+                    <path d="M 40 100 L 160 100 L 150 110 L 50 110 Z" fill="#475569" />
+                    <rect x="75" y="85" width="8" height="15" fill="#94A3B8" />
+                    <rect x="120" y="85" width="8" height="15" fill="#94A3B8" />
+                    <path d="M 50 85 C 50 45, 140 45, 150 85 Z" fill="#FF5964" />
+                    <path d="M 110 55 C 110 55, 140 55, 142 75 L 110 75 Z" fill="#38BDF8" opacity="0.8" />
+                    <rect x="95" y="35" width="10" height="15" fill="#64748B" />
+                    <g class="rotor">
+                        <ellipse cx="100" cy="35" rx="80" ry="6" fill="#334155" opacity="0.7" />
+                    </g>
+                    <path d="M 50 70 L 10 65 L 10 75 Z" fill="#FF5964" />
+                    <ellipse cx="10" cy="70" rx="4" ry="15" fill="#334155" />
+                    <circle cx="130" cy="68" r="4" fill="#FFF" opacity="0.6" />
+                </svg>
+            </div>
+
+            <h1>EKSPEDISI HELIKOPTER</h1>
+            <p class="slogan">"Terbang Bersama, Kongsikan Pendapatmu!"</p>
+
+            <button class="btn btn-yellow" style="width: 80%;" onclick="showStudentForm()">🚀 MULA EKSPEDISI</button>
+            <br>
+            <button class="btn btn-blue btn-sm" onclick="openModal('instructions-modal')">📖 CARA BERMAIN</button>
+            <button class="btn btn-purple btn-sm" onclick="openTeacherAuth()">🔒 PANEL GURU</button>
+        </div>
+    </div>
+
+    <!-- STUDENT FORM MODAL -->
+    <div id="student-modal" class="modal-overlay">
+        <div class="card">
+            <h2 style="font-family: var(--font-heading); color: var(--primary-blue); margin-bottom: 15px;">MAKLUMAT MURID</h2>
+            <p style="font-size: 0.95rem; margin-bottom: 15px; color: #475569;">Sila masukkan nama/kod dan kelas kamu sebelum memulakan penerbangan.</p>
+            
+            <form id="student-form" onsubmit="handleStudentStart(event)">
+                <div class="form-group">
+                    <label for="input-student-id">Nama / Kod Murid *</label>
+                    <input type="text" id="input-student-id" class="form-control" placeholder="Contoh: Ali / M001" required>
+                </div>
+                <div class="form-group">
+                    <label for="input-class-name">Kelas *</label>
+                    <input type="text" id="input-class-name" class="form-control" placeholder="Contoh: 4 Bestari" required>
+                </div>
+                
+                <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
+                    <button type="button" class="btn btn-red btn-sm" onclick="closeModal('student-modal')">BATAL</button>
+                    <button type="submit" class="btn btn-green">TERBANG SEKARANG 🚁</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- INSTRUCTIONS MODAL -->
+    <div id="instructions-modal" class="modal-overlay">
+        <div class="card" style="max-width: 600px; text-align: left;">
+            <h2 style="font-family: var(--font-heading); color: var(--primary-purple); text-align: center; margin-bottom: 15px;">📖 CARA BERMAIN</h2>
+            <div style="font-size: 0.95rem; line-height: 1.6; color: #334155; max-height: 60vh; overflow-y: auto;">
+                <p><strong>Selamat datang ke Ekspedisi Helikopter!</strong></p>
+                <p style="margin-top: 8px;">Jawab semua 20 pernyataan berdasarkan pendapat dan pengalaman kamu sendiri.</p>
+                <p style="margin-top: 8px; color: var(--primary-red); font-weight: 800;">💡 PENTING: Tiada jawapan betul atau salah! Pilih jawapan yang paling jujur menggambarkan perasaan kamu.</p>
+                
+                <hr style="margin: 15px 0; border: none; border-top: 2px dashed #CBD5E1;">
+                
+                <p><strong>🎮 KAWALAN HELIKOPTER:</strong></p>
+                <ul style="margin-left: 20px; margin-top: 5px;">
+                    <li><strong>Papan Kekunci:</strong> Guna anak panah <strong>KIRI (←)</strong> dan <strong>KANAN (→)</strong> untuk menggerakkan helikopter. Tekan <strong>SPACEBAR</strong> untuk mengesahkan jawapan.</li>
+                    <li><strong>Skrin Sentuh / Tetikus:</strong> Tekan butang anak panah pada skrin atau terus sentuh platform jawapan yang dipilih.</li>
+                </ul>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn btn-blue" onclick="closeModal('instructions-modal')">FAHAM & TUTUP</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION TRANSITION MODAL -->
+    <div id="section-modal" class="modal-overlay">
+        <div class="card">
+            <div style="font-size: 3rem; margin-bottom: 10px;">🌟</div>
+            <h2 id="section-modal-title" style="font-family: var(--font-heading); color: var(--primary-orange);">HEBAT!</h2>
+            <p id="section-modal-msg" style="font-size: 1.1rem; font-weight: 700; margin: 15px 0; color: #334155;">Kamu telah melengkapkan satu bahagian ekspedisi!</p>
+            <button class="btn btn-green" onclick="closeModal('section-modal')">TERUSKAN EKSPEDISI 🚁</button>
+        </div>
+    </div>
+
+    <!-- EXISTING RECORD PROMPT MODAL -->
+    <div id="resume-modal" class="modal-overlay">
+        <div class="card">
+            <div style="font-size: 3rem; margin-bottom: 10px;">📋</div>
+            <h2 style="font-family: var(--font-heading); color: var(--primary-blue);">REKOD DITEMUI</h2>
+            <p id="resume-modal-msg" style="font-size: 1rem; margin: 15px 0; color: #334155;">Rekod untuk murid ini telah sedia ada.</p>
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+                <button class="btn btn-green" onclick="resumeExistingSession()">SAMBUNG SOAL SELIDIK</button>
+                <button class="btn btn-orange" onclick="promptRestartTeacherAuth()">MULAKAN SEMULA (Kebenaran Guru)</button>
+                <button class="btn btn-red btn-sm" onclick="closeModal('resume-modal')">BATAL</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TEACHER AUTH MODAL -->
+    <div id="teacher-auth-modal" class="modal-overlay">
+        <div class="card" style="max-width: 400px;">
+            <h2 style="font-family: var(--font-heading); color: var(--primary-purple); margin-bottom: 15px;">KATA LALUAN GURU</h2>
+            <p style="font-size: 0.85rem; color: #64748B; margin-bottom: 15px;">Sila masukkan kata laluan untuk mengakses Panel Guru. (Default: <strong>admin123</strong>)</p>
+            
+            <input type="password" id="teacher-pass-input" class="form-control" placeholder="Kata Laluan" style="text-align: center; margin-bottom: 15px;">
+            
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button class="btn btn-red btn-sm" onclick="closeModal('teacher-auth-modal')">BATAL</button>
+                <button class="btn btn-purple btn-sm" onclick="verifyTeacherPassword()">MASUK PANEL</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. GAME SCREEN -->
+    <div id="game-screen" class="screen">
+        <!-- Header Info -->
+        <div class="game-header">
+            <div class="game-header-top">
+                <span class="student-badge" id="hud-student-info">Murid: -</span>
+                <span class="section-badge" id="hud-section-title">BAHAGIAN A</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div class="progress-bar-container">
+                    <div id="progress-fill" class="progress-bar-fill"></div>
+                </div>
+                <span id="hud-progress-text" class="progress-text">1/20 (5%)</span>
+            </div>
+        </div>
+
+        <!-- Question / Statement Card -->
+        <div class="statement-box">
+            <div id="statement-num" class="statement-number">PERNYATAAN 1 DARIPADA 20</div>
+            <div id="statement-text" class="statement-text">"Loading statement..."</div>
+        </div>
+
+        <!-- Flight Animation Area -->
+        <div class="flight-stage" id="flight-stage">
+            <!-- Helicopter Player -->
+            <div id="heli-player" class="heli-sprite">
+                <svg viewBox="0 0 200 150" width="100%" height="100%">
+                    <path d="M 40 100 L 160 100 L 150 110 L 50 110 Z" fill="#334155" />
+                    <rect x="75" y="85" width="8" height="15" fill="#64748B" />
+                    <rect x="120" y="85" width="8" height="15" fill="#64748B" />
+                    <path d="M 50 85 C 50 45, 140 45, 150 85 Z" fill="#FF9F1C" />
+                    <path d="M 110 55 C 110 55, 140 55, 142 75 L 110 75 Z" fill="#38BDF8" opacity="0.85" />
+                    <rect x="95" y="35" width="10" height="15" fill="#475569" />
+                    <g class="rotor">
+                        <ellipse cx="100" cy="35" rx="80" ry="6" fill="#1E293B" opacity="0.8" />
+                    </g>
+                    <path d="M 50 70 L 10 65 L 10 75 Z" fill="#FF9F1C" />
+                    <ellipse cx="10" cy="70" rx="4" ry="15" fill="#1E293B" />
+                </svg>
+            </div>
+
+            <!-- Floating Platforms -->
+            <div class="platforms-container">
+                <div class="platform p1" onclick="selectPlatform(0)">
+                    <div class="platform-icon">🔴</div>
+                    <div class="platform-scale">1</div>
+                    <div class="platform-label">TIDAK SETUJU</div>
+                </div>
+                <div class="platform p2" onclick="selectPlatform(1)">
+                    <div class="platform-icon">🟠</div>
+                    <div class="platform-scale">2</div>
+                    <div class="platform-label">KURANG SETUJU</div>
+                </div>
+                <div class="platform p3" onclick="selectPlatform(2)">
+                    <div class="platform-icon">🟢</div>
+                    <div class="platform-scale">3</div>
+                    <div class="platform-label">SETUJU</div>
+                </div>
+                <div class="platform p4" onclick="selectPlatform(3)">
+                    <div class="platform-icon">🔵</div>
+                    <div class="platform-scale">4</div>
+                    <div class="platform-label">SANGAT SETUJU</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Touch Controls Bar -->
+        <div class="controls-bar">
+            <button class="nav-btn" onclick="moveHeliLeft()" aria-label="Gerak Kiri">◀</button>
+            <button class="btn btn-green confirm-btn" onclick="confirmAnswer()">PILIH JAWAPAN ✔</button>
+            <button class="nav-btn" onclick="moveHeliRight()" aria-label="Gerak Kanan">▶</button>
+        </div>
+    </div>
+
+    <!-- 3. FINISH SCREEN -->
+    <div id="finish-screen" class="screen">
+        <div class="card" style="max-width: 600px;">
+            <div id="finish-heli-container" style="height: 100px; position: relative;">
+                <div id="finish-heli" class="heli-sprite sunset-heli" style="position: relative; left: 35%; top: 10px;">
+                    <svg viewBox="0 0 200 150" width="100%" height="100%">
+                        <path d="M 40 100 L 160 100 L 150 110 L 50 110 Z" fill="#334155" />
+                        <rect x="75" y="85" width="8" height="15" fill="#64748B" />
+                        <rect x="120" y="85" width="8" height="15" fill="#64748B" />
+                        <path d="M 50 85 C 50 45, 140 45, 150 85 Z" fill="#06D6A0" />
+                        <path d="M 110 55 C 110 55, 140 55, 142 75 L 110 75 Z" fill="#38BDF8" opacity="0.85" />
+                        <rect x="95" y="35" width="10" height="15" fill="#475569" />
+                        <g class="rotor">
+                            <ellipse cx="100" cy="35" rx="80" ry="6" fill="#1E293B" opacity="0.8" />
+                        </g>
+                        <path d="M 50 70 L 10 65 L 10 75 Z" fill="#06D6A0" />
+                        <ellipse cx="10" cy="70" rx="4" ry="15" fill="#1E293B" />
+                    </svg>
+                </div>
+            </div>
+
+            <h1 style="color: #06D6A0; font-size: 2.2rem; margin-top: 10px;">TAHNIAH! EKSPEDISI SELESAI! 🎉</h1>
+            
+            <div style="background: #F1F5F9; padding: 15px; border-radius: 16px; margin: 15px 0; text-align: left;">
+                <p><strong>Nama / Kod:</strong> <span id="finish-student-id">-</span></p>
+                <p><strong>Kelas:</strong> <span id="finish-class-name">-</span></p>
+                <p><strong>Pernyataan Dijawab:</strong> <span id="finish-answered-count">20 / 20</span></p>
+            </div>
+
+            <p style="font-size: 1.05rem; color: #334155; line-height: 1.5; margin-bottom: 20px;">
+                "Terima kasih kerana berkongsi pendapat kamu! Setiap maklum balas membantu guru merancang pembelajaran yang lebih baik."
+            </p>
+
+            <button class="btn btn-yellow" onclick="returnToMainMenu()">TAMAT & KEMBALI 🏠</button>
+        </div>
+    </div>
+
+    <!-- 4. TEACHER PANEL SCREEN -->
+    <div id="teacher-screen" class="screen">
+        <div class="teacher-container">
+            <!-- Panel Header -->
+            <div class="teacher-header">
+                <div>
+                    <h2 style="font-family: var(--font-heading);">PANEL GURU & ANALISIS</h2>
+                    <p style="font-size: 0.85rem; opacity: 0.9;">Pengurusan Rekod & Dapatkan Maklum Balas Murid</p>
+                </div>
+                <button class="btn btn-red btn-sm" onclick="exitTeacherPanel()">KEMBALI KE MENU UTAMA</button>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <div class="teacher-nav">
+                <button class="tab-btn active" onclick="switchTeacherTab('tab-students')">👨‍🎓 Senarai Murid & Respons</button>
+                <button class="tab-btn" onclick="switchTeacherTab('tab-summary')">📊 Analisis Ringkas</button>
+                <button class="tab-btn" onclick="switchTeacherTab('tab-settings')">⚙️ Pengurusan Data & Sandaran</button>
+            </div>
+
+            <!-- Panel Content Body -->
+            <div class="teacher-body">
+                
+                <!-- TAB 1: STUDENT LIST -->
+                <div id="tab-students" class="tab-content">
+                    <div class="filter-bar">
+                        <input type="text" id="search-student" class="form-control" placeholder="Cari nama / kod murid..." style="max-width: 250px; padding: 8px 14px; font-size: 0.9rem;" oninput="renderStudentTable()">
+                        <select id="filter-class" class="form-control" style="max-width: 180px; padding: 8px 14px; font-size: 0.9rem;" onchange="renderStudentTable()">
+                            <option value="">Semua Kelas</option>
+                        </select>
+                        <select id="filter-status" class="form-control" style="max-width: 180px; padding: 8px 14px; font-size: 0.9rem;" onchange="renderStudentTable()">
+                            <option value="">Semua Status</option>
+                            <option value="Selesai">Selesai</option>
+                            <option value="Belum Selesai">Belum Selesai</option>
+                        </select>
+                        <button class="btn btn-green btn-sm" style="margin-left: auto;" onclick="exportToCSV()">EKSPORT CSV 📄</button>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Bil.</th>
+                                    <th>Nama / Kod Murid</th>
+                                    <th>Kelas</th>
+                                    <th>Tarikh Mula</th>
+                                    <th>Pernyataan</th>
+                                    <th>Status</th>
+                                    <th>Tindakan</th>
+                                </tr>
+                            </thead>
+                            <tbody id="student-table-body">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TAB 2: DESCRIPTIVE ANALYSIS SUMMARY -->
+                <div id="tab-summary" class="tab-content" style="display: none;">
+                    <div class="summary-grid">
+                        <div class="summary-card">
+                            <h4>JUMLAH MURID MULA</h4>
+                            <div class="number" id="sum-total-started">0</div>
+                        </div>
+                        <div class="summary-card" style="border-left-color: var(--primary-green);">
+                            <h4>SELESAI (20/20)</h4>
+                            <div class="number" id="sum-total-completed">0</div>
+                        </div>
+                        <div class="summary-card" style="border-left-color: var(--primary-orange);">
+                            <h4>BELUM SELESAI</h4>
+                            <div class="number" id="sum-total-incomplete">0</div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3 style="color: #334155;">Ringkasan Frekuensi & Peratus Respons</h3>
+                        <button class="btn btn-blue btn-sm" onclick="exportSummaryCSV()">EKSPORT RINGKASAN CSV 📊</button>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 40%;">Pernyataan Soal Selidik</th>
+                                    <th style="text-align: center;">Tidak Setuju (1)</th>
+                                    <th style="text-align: center;">Kurang Setuju (2)</th>
+                                    <th style="text-align: center;">Setuju (3)</th>
+                                    <th style="text-align: center;">Sangat Setuju (4)</th>
+                                    <th style="text-align: center;">Jumlah Respons Sah</th>
+                                </tr>
+                            </thead>
+                            <tbody id="summary-table-body">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TAB 3: DATA MANAGEMENT & BACKUP -->
+                <div id="tab-settings" class="tab-content" style="display: none;">
+                    <div style="max-width: 650px; margin: 0 auto; background: white; padding: 25px; border-radius: 18px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                        <h3 style="color: var(--primary-purple); margin-bottom: 15px;">⚙️ Sandaran & Pemulihan Data (JSON)</h3>
+                        <p style="font-size: 0.9rem; color: #64748B; margin-bottom: 20px; line-height: 1.5;">
+                            Peringatan: Semua data disimpan secara setempat pada peranti/pelayar ini (localStorage). Sila buat sandaran fail JSON secara berkala supaya data tidak hilang jika pelayar dibersihkan.
+                        </p>
+
+                        <div style="display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap;">
+                            <button class="btn btn-purple" onclick="downloadJSONBackup()">MUAT TURUN SANDARAN JSON 💾</button>
+                            <label class="btn btn-blue" style="margin: 0; cursor: pointer;">
+                                PULIHKAN DARI JSON 📂
+                                <input type="file" id="json-file-input" accept=".json" style="display: none;" onchange="restoreJSONBackup(event)">
+                            </label>
+                        </div>
+
+                        <hr style="margin: 20px 0; border: none; border-top: 2px dashed #E2E8F0;">
+
+                        <h3 style="color: var(--primary-red); margin-bottom: 15px;">⚠️ Pengurusan Padam Data</h3>
+                        <p style="font-size: 0.9rem; color: #64748B; margin-bottom: 15px;">
+                            Tindakan memadam adalah kekal dan tidak boleh diundur.
+                        </p>
+                        <button class="btn btn-red btn-sm" onclick="clearAllDataPrompt()">PADAM SEMUA REKOD DATA 🗑️</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- INDIVIDUAL RESPONSE DETAIL MODAL -->
+    <div id="response-detail-modal" class="modal-overlay">
+        <div class="card" style="max-width: 650px;">
+            <h2 style="font-family: var(--font-heading); color: var(--primary-blue);">RESPONS INDIVIDU</h2>
+            <div id="detail-student-header" style="font-size: 0.95rem; font-weight: 800; color: #475569; margin: 10px 0;"></div>
+            
+            <div id="detail-response-list" class="response-detail-list">
+                <!-- Items populated dynamically -->
+            </div>
+
+            <button class="btn btn-blue btn-sm" onclick="closeModal('response-detail-modal')">TUTUP</button>
+        </div>
+    </div>
+
+
+    <script>
+        /* ==========================================================================
+           20 QUESTIONNAIRE STATEMENTS (MALAY)
+           ========================================================================== */
+        const SURVEY_QUESTIONS = [
+            // BAHAGIAN A: MINAT DAN KESERONOKAN
+            { id: "Q1", section: "BAHAGIAN A: MINAT DAN KESERONOKAN", text: "Saya suka belajar menggunakan bahan pengajaran yang disediakan oleh guru." },
+            { id: "Q2", section: "BAHAGIAN A: MINAT DAN KESERONOKAN", text: "Bahan pengajaran yang digunakan oleh guru membosankan saya." },
+            { id: "Q3", section: "BAHAGIAN A: MINAT DAN KESERONOKAN", text: "Saya berasa seronok semasa menjalankan aktiviti pembelajaran." },
+            { id: "Q4", section: "BAHAGIAN A: MINAT DAN KESERONOKAN", text: "Saya kurang berminat untuk menyertai aktiviti pembelajaran yang dijalankan." },
+            { id: "Q5", section: "BAHAGIAN A: MINAT DAN KESERONOKAN", text: "Saya berharap guru menggunakan bahan pengajaran seperti ini lagi." },
+            
+            // BAHAGIAN B: KEFAHAMAN DAN PEMBELAJARAN
+            { id: "Q6", section: "BAHAGIAN B: KEFAHAMAN DAN PEMBELAJARAN", text: "Bahan pengajaran yang digunakan membantu saya memahami pelajaran dengan mudah." },
+            { id: "Q7", section: "BAHAGIAN B: KEFAHAMAN DAN PEMBELAJARAN", text: "Saya masih sukar memahami pelajaran walaupun guru menggunakan bahan pengajaran tersebut." },
+            { id: "Q8", section: "BAHAGIAN B: KEFAHAMAN DAN PEMBELAJARAN", text: "Penerangan guru menjadi lebih jelas apabila menggunakan bahan pengajaran tersebut." },
+            { id: "Q9", section: "BAHAGIAN B: KEFAHAMAN DAN PEMBELAJARAN", text: "Saya berasa keliru semasa menggunakan bahan pengajaran yang disediakan." },
+            { id: "Q10", section: "BAHAGIAN B: KEFAHAMAN DAN PEMBELAJARAN", text: "Aktiviti pembelajaran membantu saya mengingati perkara yang telah dipelajari." },
+            
+            // BAHAGIAN C: PENGGUNAAN BAHAN DAN PELAKSANAAN AKTIVITI
+            { id: "Q11", section: "BAHAGIAN C: PENGGUNAAN BAHAN DAN PELAKSANAAN AKTIVITI", text: "Bahan pengajaran yang digunakan mudah untuk saya fahami dan gunakan." },
+            { id: "Q12", section: "BAHAGIAN C: PENGGUNAAN BAHAN DAN PELAKSANAAN AKTIVITI", text: "Arahan aktiviti yang diberikan oleh guru sukar untuk saya fahami." },
+            { id: "Q13", section: "BAHAGIAN C: PENGGUNAAN BAHAN DAN PELAKSANAAN AKTIVITI", text: "Saya dapat menyiapkan tugasan menggunakan bahan pengajaran tersebut." },
+            { id: "Q14", section: "BAHAGIAN C: PENGGUNAAN BAHAN DAN PELAKSANAAN AKTIVITI", text: "Aktiviti yang dijalankan mengambil masa yang terlalu lama bagi saya." },
+            { id: "Q15", section: "BAHAGIAN C: PENGGUNAAN BAHAN DAN PELAKSANAAN AKTIVITI", text: "Bahan pengajaran tersebut sesuai digunakan untuk mempelajari topik ini." },
+            
+            // BAHAGIAN D: PENGLIBATAN DAN KEYAKINAN MURID
+            { id: "Q16", section: "BAHAGIAN D: PENGLIBATAN DAN KEYAKINAN MURID", text: "Saya suka memberikan pendapat semasa aktiviti pembelajaran dijalankan." },
+            { id: "Q17", section: "BAHAGIAN D: PENGLIBATAN DAN KEYAKINAN MURID", text: "Saya berasa takut atau malu untuk melibatkan diri dalam aktiviti pembelajaran." },
+            { id: "Q18", section: "BAHAGIAN D: PENGLIBATAN DAN KEYAKINAN MURID", text: "Saya suka bekerjasama dengan rakan-rakan semasa menjalankan aktiviti pembelajaran." },
+            { id: "Q19", section: "BAHAGIAN D: PENGLIBATAN DAN KEYAKINAN MURID", text: "Saya berasa bosan apabila perlu melakukan aktiviti bersama-sama rakan." },
+            { id: "Q20", section: "BAHAGIAN D: PENGLIBATAN DAN KEYAKINAN MURID", text: "Secara keseluruhannya, saya berpuas hati dengan bahan pengajaran dan aktiviti pembelajaran yang dijalankan oleh guru." }
+        ];
+
+        const SCALE_MAP = [
+            { value: 1, label: "Tidak Setuju" },
+            { value: 2, label: "Kurang Setuju" },
+            { value: 3, label: "Setuju" },
+            { value: 4, label: "Sangat Setuju" }
+        ];
+
+        /* ==========================================================================
+           GLOBAL GAME & DATA STATE
+           ========================================================================== */
+        const STORAGE_KEY = "HELICOPTER_EXPEDITION_RESPONSES_V1";
+        const TEACHER_PASSWORD_KEY = "HELICOPTER_TEACHER_PASS";
+        
+        let currentStudentRecord = null;
+        let currentQuestionIndex = 0;
+        let selectedPlatformIndex = 2; // Default starting at index 2 ("Setuju")
+        let soundEnabled = true;
+
+        // Web Audio Synthesizer sound generator
+        let audioCtx = null;
+
+        function playSound(type) {
+            if (!soundEnabled) return;
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                const now = audioCtx.currentTime;
+
+                if (type === 'move') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(300, now);
+                    osc.frequency.exponentialRampToValueAtTime(500, now + 0.08);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.08);
+                    osc.start(now);
+                    osc.stop(now + 0.08);
+                } else if (type === 'confirm') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(523.25, now); // C5
+                    osc.frequency.setValueAtTime(659.25, now + 0.08); // E5
+                    osc.frequency.setValueAtTime(783.99, now + 0.16); // G5
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.3);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                } else if (type === 'complete') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(400, now);
+                    osc.frequency.linearRampToValueAtTime(800, now + 0.4);
+                    gain.gain.setValueAtTime(0.25, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.5);
+                    osc.start(now);
+                    osc.stop(now + 0.5);
+                }
+            } catch (e) {
+                console.log("Audio not supported or blocked");
+            }
+        }
+
+        function toggleAudio() {
+            soundEnabled = !soundEnabled;
+            document.getElementById('sound-toggle-btn').innerText = soundEnabled ? '🔊' : '🔇';
+        }
+
+        /* ==========================================================================
+           STORAGE ENGINE
+           ========================================================================== */
+        function getAllRecords() {
+            try {
+                const data = localStorage.getItem(STORAGE_KEY);
+                return data ? JSON.parse(data) : [];
+            } catch (e) {
+                console.error("Failed to read from localStorage", e);
+                return [];
+            }
+        }
+
+        function saveAllRecords(records) {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+            } catch (e) {
+                console.error("Failed to save to localStorage", e);
+            }
+        }
+
+        function saveSingleRecord(record) {
+            const records = getAllRecords();
+            const index = records.findIndex(r => r.studentId.toLowerCase() === record.studentId.toLowerCase());
+            if (index >= 0) {
+                records[index] = record;
+            } else {
+                records.push(record);
+            }
+            saveAllRecords(records);
+        }
+
+        /* ==========================================================================
+           UI NAVIGATION & MODALS
+           ========================================================================== */
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            
+            // Toggle body sunset theme if finish screen
+            if (screenId === 'finish-screen') {
+                document.body.classList.add('sunset-bg');
+            } else {
+                document.body.classList.remove('sunset-bg');
+            }
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 1800);
+        }
+
+        /* ==========================================================================
+           STUDENT FLOW & HANDLERS
+           ========================================================================== */
+        function showStudentForm() {
+            document.getElementById('input-student-id').value = '';
+            document.getElementById('input-class-name').value = '';
+            openModal('student-modal');
+        }
+
+        function handleStudentStart(e) {
+            e.preventDefault();
+            const studentId = document.getElementById('input-student-id').value.trim();
+            const className = document.getElementById('input-class-name').value.trim();
+
+            if (!studentId || !className) return;
+
+            const records = getAllRecords();
+            const existing = records.find(r => r.studentId.toLowerCase() === studentId.toLowerCase());
+
+            if (existing) {
+                currentStudentRecord = existing;
+                closeModal('student-modal');
+                document.getElementById('resume-modal-msg').innerText = 
+                    `Rekod untuk "${existing.studentName}" (${existing.className}) telah wujud. Status: ${existing.status} (${existing.answeredCount}/20 dijawab).`;
+                openModal('resume-modal');
+            } else {
+                // Create new record
+                currentStudentRecord = {
+                    id: 'REC_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+                    studentId: studentId,
+                    studentName: studentId,
+                    className: className,
+                    startTime: new Date().toISOString(),
+                    endTime: null,
+                    status: "Belum Selesai",
+                    answeredCount: 0,
+                    responses: {}
+                };
+                saveSingleRecord(currentStudentRecord);
+                closeModal('student-modal');
+                startSurveySession(0);
+            }
+        }
+
+        function resumeExistingSession() {
+            closeModal('resume-modal');
+            let nextIndex = 0;
+            // Find first unanswered question
+            for (let i = 0; i < SURVEY_QUESTIONS.length; i++) {
+                if (!currentStudentRecord.responses[SURVEY_QUESTIONS[i].id]) {
+                    nextIndex = i;
+                    break;
+                }
+            }
+            if (currentStudentRecord.answeredCount === 20) nextIndex = 19;
+            startSurveySession(nextIndex);
+        }
+
+        function promptRestartTeacherAuth() {
+            closeModal('resume-modal');
+            openTeacherAuth(true); // Flag for restart permission
+        }
+
+        let isTeacherAuthForRestart = false;
+
+        function openTeacherAuth(forRestart = false) {
+            isTeacherAuthForRestart = forRestart;
+            document.getElementById('teacher-pass-input').value = '';
+            openModal('teacher-auth-modal');
+        }
+
+        function verifyTeacherPassword() {
+            const inputPass = document.getElementById('teacher-pass-input').value;
+            const storedPass = localStorage.getItem(TEACHER_PASSWORD_KEY) || "admin123";
+
+            if (inputPass === storedPass) {
+                closeModal('teacher-auth-modal');
+                if (isTeacherAuthForRestart) {
+                    // Reset student responses
+                    currentStudentRecord.startTime = new Date().toISOString();
+                    currentStudentRecord.endTime = null;
+                    currentStudentRecord.status = "Belum Selesai";
+                    currentStudentRecord.answeredCount = 0;
+                    currentStudentRecord.responses = {};
+                    saveSingleRecord(currentStudentRecord);
+                    startSurveySession(0);
+                } else {
+                    openTeacherPanel();
+                }
+            } else {
+                alert("Kata laluan salah!");
+            }
+        }
+
+        /* ==========================================================================
+           GAME MECHANICS & HELICOPTER LOGIC
+           ========================================================================== */
+        function startSurveySession(questionIdx) {
+            currentQuestionIndex = questionIdx;
+            showScreen('game-screen');
+            updateHUD();
+            loadQuestion(currentQuestionIndex);
+        }
+
+        function updateHUD() {
+            document.getElementById('hud-student-info').innerText = `Murid: ${currentStudentRecord.studentName} (${currentStudentRecord.className})`;
+            const q = SURVEY_QUESTIONS[currentQuestionIndex];
+            document.getElementById('hud-section-title').innerText = q.section;
+            
+            const count = currentQuestionIndex + 1;
+            const pct = Math.round((count / 20) * 100);
+            document.getElementById('hud-progress-text').innerText = `${count}/20 (${pct}%)`;
+            document.getElementById('progress-fill').style.width = `${pct}%`;
+        }
+
+        function loadQuestion(index) {
+            const q = SURVEY_QUESTIONS[index];
+            document.getElementById('statement-num').innerText = `PERNYATAAN ${index + 1} DARIPADA 20`;
+            document.getElementById('statement-text').innerText = `"${q.text}"`;
+
+            // Check if already answered, highlight that platform, or default to middle
+            if (currentStudentRecord.responses[q.id]) {
+                const val = currentStudentRecord.responses[q.id].value;
+                selectedPlatformIndex = val - 1;
+            } else {
+                selectedPlatformIndex = 2; // Default to 'Setuju'
+            }
+
+            positionHelicopter(selectedPlatformIndex);
+        }
+
+        function positionHelicopter(platformIdx) {
+            selectedPlatformIndex = platformIdx;
+            const platforms = document.querySelectorAll('.platform');
+            platforms.forEach((p, idx) => {
+                if (idx === platformIdx) p.classList.add('active');
+                else p.classList.remove('active');
+            });
+
+            // Calculate percentage horizontal position for heli
+            // 0 -> 12.5%, 1 -> 37.5%, 2 -> 62.5%, 3 -> 87.5%
+            const targetLeft = 12.5 + (platformIdx * 25);
+            const heli = document.getElementById('heli-player');
+            heli.style.left = `${targetLeft}%`;
+        }
+
+        function moveHeliLeft() {
+            if (selectedPlatformIndex > 0) {
+                playSound('move');
+                positionHelicopter(selectedPlatformIndex - 1);
+            }
+        }
+
+        function moveHeliRight() {
+            if (selectedPlatformIndex < 3) {
+                playSound('move');
+                positionHelicopter(selectedPlatformIndex + 1);
+            }
+        }
+
+        function selectPlatform(index) {
+            playSound('move');
+            positionHelicopter(index);
+        }
+
+        function confirmAnswer() {
+            playSound('confirm');
+            const q = SURVEY_QUESTIONS[currentQuestionIndex];
+            const scaleObj = SCALE_MAP[selectedPlatformIndex];
+
+            // Record response
+            currentStudentRecord.responses[q.id] = {
+                value: scaleObj.value,
+                label: scaleObj.label
+            };
+
+            // Recalculate answered count
+            currentStudentRecord.answeredCount = Object.keys(currentStudentRecord.responses).length;
+
+            if (currentStudentRecord.answeredCount >= 20) {
+                currentStudentRecord.status = "Selesai";
+                currentStudentRecord.endTime = new Date().toISOString();
+            }
+
+            // Save immediately to localStorage
+            saveSingleRecord(currentStudentRecord);
+
+            showToast("Jawapan kamu telah direkodkan!");
+
+            // Check for Section transition popups (After Q5, Q10, Q15)
+            const currentNum = currentQuestionIndex + 1;
+            if ((currentNum === 5 || currentNum === 10 || currentNum === 15) && currentNum < 20) {
+                document.getElementById('section-modal-title').innerText = "HEBAT! BAHAGIAN SELESAI!";
+                document.getElementById('section-modal-msg').innerText = `Kamu telah melengkapkan Pernyataan ${currentNum} daripada 20! Teruskan pengembaraan helikopter kamu!`;
+                openModal('section-modal');
+            }
+
+            // Move to next question or complete
+            setTimeout(() => {
+                if (currentQuestionIndex < 19) {
+                    currentQuestionIndex++;
+                    updateHUD();
+                    loadQuestion(currentQuestionIndex);
+                } else {
+                    finishSurvey();
+                }
+            }, 500);
+        }
+
+        function finishSurvey() {
+            playSound('complete');
+            document.getElementById('finish-student-id').innerText = currentStudentRecord.studentName;
+            document.getElementById('finish-class-name').innerText = currentStudentRecord.className;
+            document.getElementById('finish-answered-count').innerText = `${currentStudentRecord.answeredCount} / 20`;
+            showScreen('finish-screen');
+        }
+
+        function returnToMainMenu() {
+            showScreen('start-screen');
+        }
+
+        /* Keyboard Controls Listener */
+        window.addEventListener('keydown', (e) => {
+            const gameScreen = document.getElementById('game-screen');
+            if (!gameScreen.classList.contains('active')) return;
+
+            if (e.key === 'ArrowLeft') {
+                moveHeliLeft();
+            } else if (e.key === 'ArrowRight') {
+                moveHeliRight();
+            } else if (e.key === ' ' || e.key === 'Enter') {
+                e.preventDefault();
+                confirmAnswer();
+            }
+        });
+
+        /* ==========================================================================
+           TEACHER PANEL & ANALYTICS
+           ========================================================================== */
+        function openTeacherPanel() {
+            showScreen('teacher-screen');
+            populateClassFilter();
+            renderStudentTable();
+            renderSummaryTab();
+        }
+
+        function exitTeacherPanel() {
+            showScreen('start-screen');
+        }
+
+        function switchTeacherTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
+            
+            event.currentTarget.classList.add('active');
+            document.getElementById(tabId).style.display = 'block';
+
+            if (tabId === 'tab-summary') renderSummaryTab();
+        }
+
+        function populateClassFilter() {
+            const records = getAllRecords();
+            const classes = [...new Set(records.map(r => r.className))].filter(Boolean);
+            const select = document.getElementById('filter-class');
+            select.innerHTML = '<option value="">Semua Kelas</option>';
+            classes.forEach(c => {
+                select.innerHTML += `<option value="${c}">${c}</option>`;
+            });
+        }
+
+        function renderStudentTable() {
+            const records = getAllRecords();
+            const searchVal = document.getElementById('search-student').value.toLowerCase();
+            const classFilter = document.getElementById('filter-class').value;
+            const statusFilter = document.getElementById('filter-status').value;
+
+            const filtered = records.filter(r => {
+                const matchSearch = r.studentName.toLowerCase().includes(searchVal) || r.studentId.toLowerCase().includes(searchVal);
+                const matchClass = !classFilter || r.className === classFilter;
+                const matchStatus = !statusFilter || r.status === statusFilter;
+                return matchSearch && matchClass && matchStatus;
+            });
+
+            const tbody = document.getElementById('student-table-body');
+            tbody.innerHTML = '';
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#94A3B8; padding:20px;">Tiada rekod murid dijumpai.</td></tr>`;
+                return;
+            }
+
+            filtered.forEach((r, idx) => {
+                const dateStr = r.startTime ? new Date(r.startTime).toLocaleString('ms-MY') : '-';
+                const statusBadge = r.status === 'Selesai' 
+                    ? `<span class="badge badge-success">Selesai</span>` 
+                    : `<span class="badge badge-warning">Belum Selesai</span>`;
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${idx + 1}</td>
+                        <td><strong>${r.studentName}</strong></td>
+                        <td>${r.className}</td>
+                        <td>${dateStr}</td>
+                        <td>${r.answeredCount} / 20</td>
+                        <td>${statusBadge}</td>
+                        <td>
+                            <button class="btn btn-blue btn-sm" style="padding:4px 10px; font-size:0.8rem;" onclick="viewStudentDetails('${r.id}')">LIHAT RESPONS</button>
+                            <button class="btn btn-red btn-sm" style="padding:4px 8px; font-size:0.8rem;" onclick="deleteSingleRecord('${r.id}')">🗑️</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function viewStudentDetails(recordId) {
+            const records = getAllRecords();
+            const record = records.find(r => r.id === recordId);
+            if (!record) return;
+
+            document.getElementById('detail-student-header').innerText = 
+                `Murid: ${record.studentName} | Kelas: ${record.className} | Status: ${record.status}`;
+
+            const listContainer = document.getElementById('detail-response-list');
+            listContainer.innerHTML = '';
+
+            SURVEY_QUESTIONS.forEach((q, idx) => {
+                const resp = record.responses[q.id];
+                const answerText = resp ? `${resp.value} — ${resp.label}` : `<span style="color:#EF476F; font-weight:bold;">Belum dijawab.</span>`;
+
+                listContainer.innerHTML += `
+                    <div class="response-item">
+                        <div><strong>Pernyataan ${idx + 1}:</strong> "${q.text}"</div>
+                        <div style="margin-top:4px; font-weight:800; color:#334155;">Jawapan: ${answerText}</div>
+                    </div>
+                `;
+            });
+
+            openModal('response-detail-modal');
+        }
+
+        function deleteSingleRecord(recordId) {
+            if (confirm("Adakah anda pasti mahu memadam rekod murid ini?")) {
+                let records = getAllRecords();
+                records = records.filter(r => r.id !== recordId);
+                saveAllRecords(records);
+                renderStudentTable();
+                renderSummaryTab();
+            }
+        }
+
+        /* Summary Analytics Tab */
+        function renderSummaryTab() {
+            const records = getAllRecords();
+            const totalStarted = records.length;
+            const totalCompleted = records.filter(r => r.status === 'Selesai').length;
+            const totalIncomplete = totalStarted - totalCompleted;
+
+            document.getElementById('sum-total-started').innerText = totalStarted;
+            document.getElementById('sum-total-completed').innerText = totalCompleted;
+            document.getElementById('sum-total-incomplete').innerText = totalIncomplete;
+
+            const tbody = document.getElementById('summary-table-body');
+            tbody.innerHTML = '';
+
+            SURVEY_QUESTIONS.forEach((q, idx) => {
+                let count1 = 0, count2 = 0, count3 = 0, count4 = 0;
+                let validResponsesCount = 0;
+
+                records.forEach(r => {
+                    const resp = r.responses[q.id];
+                    if (resp && resp.value) {
+                        validResponsesCount++;
+                        if (resp.value === 1) count1++;
+                        if (resp.value === 2) count2++;
+                        if (resp.value === 3) count3++;
+                        if (resp.value === 4) count4++;
+                    }
+                });
+
+                const pct1 = validResponsesCount ? Math.round((count1 / validResponsesCount) * 100) : 0;
+                const pct2 = validResponsesCount ? Math.round((count2 / validResponsesCount) * 100) : 0;
+                const pct3 = validResponsesCount ? Math.round((count3 / validResponsesCount) * 100) : 0;
+                const pct4 = validResponsesCount ? Math.round((count4 / validResponsesCount) * 100) : 0;
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>P${idx + 1}:</strong> ${q.text}</td>
+                        <td style="text-align:center;">${count1} (${pct1}%)</td>
+                        <td style="text-align:center;">${count2} (${pct2}%)</td>
+                        <td style="text-align:center;">${count3} (${pct3}%)</td>
+                        <td style="text-align:center;">${count4} (${pct4}%)</td>
+                        <td style="text-align:center; font-weight:800; color:var(--primary-blue);">${validResponsesCount}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        /* Export Features */
+        function exportToCSV() {
+            const records = getAllRecords();
+            if (records.length === 0) {
+                alert("Tiada data untuk dieksport.");
+                return;
+            }
+
+            let csv = "\uFEFF"; // UTF-8 BOM for Malay characters in Excel
+            csv += "Nama/Kod Murid,Kelas,Status,Tarikh Mula,Tarikh Selesai,Masa Diambil (s)";
+            SURVEY_QUESTIONS.forEach((q, idx) => {
+                csv += `,Pernyataan ${idx + 1} (Skala),Pernyataan ${idx + 1} (Label)`;
+            });
+            csv += "\n";
+
+            records.forEach(r => {
+                const startTime = r.startTime ? new Date(r.startTime).toLocaleString('ms-MY') : '';
+                const endTime = r.endTime ? new Date(r.endTime).toLocaleString('ms-MY') : '';
+                let durationSec = '';
+                if (r.startTime && r.endTime) {
+                    durationSec = Math.round((new Date(r.endTime) - new Date(r.startTime)) / 1000);
+                }
+
+                let row = `"${r.studentName}","${r.className}","${r.status}","${startTime}","${endTime}","${durationSec}"`;
+
+                SURVEY_QUESTIONS.forEach(q => {
+                    const resp = r.responses[q.id];
+                    if (resp) {
+                        row += `,"${resp.value}","${resp.label}"`;
+                    } else {
+                        row += `,"","Belum Dijawab"`;
+                    }
+                });
+
+                csv += row + "\n";
+            });
+
+            downloadBlob(csv, `Ekspedisi_Helikopter_Respons_${new Date().toISOString().slice(0,10)}.csv`, 'text/csv;charset=utf-8;');
+        }
+
+        function exportSummaryCSV() {
+            const records = getAllRecords();
+            let csv = "\uFEFF";
+            csv += "Kod Pernyataan,Teks Pernyataan,Tidak Setuju (1) Bil,Tidak Setuju (1) %,Kurang Setuju (2) Bil,Kurang Setuju (2) %,Setuju (3) Bil,Setuju (3) %,Sangat Setuju (4) Bil,Sangat Setuju (4) %,Jumlah Respons Sah\n";
+
+            SURVEY_QUESTIONS.forEach((q, idx) => {
+                let count1 = 0, count2 = 0, count3 = 0, count4 = 0, validCount = 0;
+                records.forEach(r => {
+                    const resp = r.responses[q.id];
+                    if (resp && resp.value) {
+                        validCount++;
+                        if (resp.value === 1) count1++;
+                        if (resp.value === 2) count2++;
+                        if (resp.value === 3) count3++;
+                        if (resp.value === 4) count4++;
+                    }
+                });
+
+                const pct1 = validCount ? ((count1 / validCount) * 100).toFixed(1) : 0;
+                const pct2 = validCount ? ((count2 / validCount) * 100).toFixed(1) : 0;
+                const pct3 = validCount ? ((count3 / validCount) * 100).toFixed(1) : 0;
+                const pct4 = validCount ? ((count4 / validCount) * 100).toFixed(1) : 0;
+
+                csv += `"Pernyataan ${idx + 1}","${q.text}",${count1},${pct1}%,${count2},${pct2}%,${count3},${pct3}%,${count4},${pct4}%,${validCount}\n`;
+            });
+
+            downloadBlob(csv, `Ekspedisi_Helikopter_Ringkasan_${new Date().toISOString().slice(0,10)}.csv`, 'text/csv;charset=utf-8;');
+        }
+
+        function downloadJSONBackup() {
+            const records = getAllRecords();
+            const jsonStr = JSON.stringify(records, null, 2);
+            downloadBlob(jsonStr, `Ekspedisi_Helikopter_Backup_${new Date().toISOString().slice(0,10)}.json`, 'application/json');
+        }
+
+        function restoreJSONBackup(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const restored = JSON.parse(e.target.result);
+                    if (Array.isArray(restored)) {
+                        saveAllRecords(restored);
+                        alert("Data berjaya dipulihkan dari sandaran JSON!");
+                        renderStudentTable();
+                        renderSummaryTab();
+                    } else {
+                        alert("Format fail JSON tidak sah.");
+                    }
+                } catch (err) {
+                    alert("Ralat membaca fail JSON.");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function clearAllDataPrompt() {
+            if (confirm("AMARAN: Adakah anda pasti mahu MEMADAM SEMUA REKOD DATA? Data yang dipadam tidak boleh dikembalikan!")) {
+                localStorage.removeItem(STORAGE_KEY);
+                renderStudentTable();
+                renderSummaryTab();
+                alert("Semua data telah dipadam.");
+            }
+        }
+
+        function downloadBlob(content, filename, contentType) {
+            const blob = new Blob([content], { type: contentType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Initialize state on load
+        window.addEventListener('load', () => {
+            // Set default password if not set
+            if (!localStorage.getItem(TEACHER_PASSWORD_KEY)) {
+                localStorage.setItem(TEACHER_PASSWORD_KEY, "admin123");
+            }
+        });
+    </script>
+</body>
+</html>
